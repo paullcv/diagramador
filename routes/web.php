@@ -20,3 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Diagrama
+Route::get('/diagramas', [App\Http\Controllers\DiagramController::class, 'index']);
+
+Route::get('/diagramas/create', [App\Http\Controllers\DiagramController::class, 'create']);
+Route::get('/diagramas/{diagram}/edit', [App\Http\Controllers\DiagramController::class, 'edit']);
+Route::post('/diagramas', [App\Http\Controllers\DiagramController::class, 'sendData']);
