@@ -42,4 +42,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //Relacion uno a muchos con diagrama
+    public function diagrams()
+    {
+        return $this->hasMany(Diagram::class);
+    }
+
+    //Relacion uno a muchos con invitados
+    public function invitations()
+    {
+        return $this->hasMany(Invited::class, 'user_id');
+    }
 }

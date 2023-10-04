@@ -18,8 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('diagram_id');
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('diagram_id')->references('id')->on('users');
-
+            $table->foreign('diagram_id')->references('id')->on('diagrams');
 
             $table->timestamps();
         });

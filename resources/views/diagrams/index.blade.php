@@ -20,7 +20,13 @@
             @endif
         </div>
 
-        <div class="table-responsive">
+        @if ($diagramas->isEmpty())
+        <div class="alert alert-warning" role="alert">
+            Sin diagramas creados por el momento.
+        </div>
+            
+        @else
+            <div class="table-responsive">
             <!-- Projects table -->
             <table class="table align-items-center table-flush">
                 <thead class="thead-light">
@@ -54,8 +60,8 @@
                                     <a href="{{ url('/diagramas/' . $diagrama->id . '/edit') }}"
                                         class="btn btn-sm btn-primary">Editar</a>
                                     <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                                    <a href="url" class="btn btn-sm btn-info">Ir al Diagrama</a>
-                                    <a href="url" class="btn btn-sm btn-warning">Invitar</a>
+                                    <a href="#" class="btn btn-sm btn-info">Ir al Diagrama</a>
+                                    <a href="{{ url('/diagramas/' . $diagrama->id .'/invitaciones') }}" class="btn btn-sm btn-warning">Invitar</a>
                                 </form>
                             </td>
                         </tr>
@@ -63,5 +69,7 @@
                 </tbody>
             </table>
         </div>
+        @endif
+        
     </div>
 @endsection
