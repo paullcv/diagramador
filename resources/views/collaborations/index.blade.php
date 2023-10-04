@@ -20,7 +20,6 @@
                 <table class="table align-items-center table-flush">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Id</th>
                             <th scope="col">Diagrama</th>
                             <th scope="col">Anfitrion</th>
                             <th scope="col">Opciones</th>
@@ -30,13 +29,10 @@
                         @foreach ($invitaciones as $invitacion)
                             <tr>
                                 <th scope="row">
-                                    {{ $invitacion->id }}
+                                    {{ $invitacion->diagram->titulo }}
                                 </th>
                                 <td>
-                                    {{ $diagrama->diagram_id }}
-                                </td>
-                                <td>
-                                    {{ $diagrama->user_id }}
+                                    {{ $invitacion->diagram->user->name }}
                                 </td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-info">Ir al Diagrama</a>
