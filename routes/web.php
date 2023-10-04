@@ -35,3 +35,6 @@ Route::delete('/diagramas/{diagram}', [App\Http\Controllers\DiagramController::c
 //Inivtaciones
 Route::get('/diagramas/{diagram}/invitaciones', [App\Http\Controllers\DiagramController::class, 'invitar']);
 Route::post('/diagramas/invitaciones', [App\Http\Controllers\DiagramController::class, 'sendInvitation']);
+
+//Colaboraciones
+Route::get('/colaboraciones', [App\Http\Controllers\InvitedController::class, 'index']);

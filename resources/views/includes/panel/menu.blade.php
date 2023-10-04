@@ -11,7 +11,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link " href="./examples/maps.html">
+        <a class="nav-link " href="{{ url('/colaboraciones') }}">
             <i class="fas fa-bezier-curve text-success"></i> Colaboraciones
         </a>
     </li>

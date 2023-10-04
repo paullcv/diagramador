@@ -23,6 +23,7 @@
         @else
             <form action="{{ url('/diagramas/invitaciones')}}" method="POST">
                 @csrf
+                <input type="hidden" name="diagram_id" value="{{ $diagram->id }}">
                 <div class="form-group">
                     <label for="user_id">Seleccionar Usuario para Invitar</label>
                     <select name="user_id" id="user_id" class="form-control">
