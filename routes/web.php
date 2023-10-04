@@ -27,3 +27,7 @@ Route::get('/diagramas', [App\Http\Controllers\DiagramController::class, 'index'
 Route::get('/diagramas/create', [App\Http\Controllers\DiagramController::class, 'create']);
 Route::get('/diagramas/{diagram}/edit', [App\Http\Controllers\DiagramController::class, 'edit']);
 Route::post('/diagramas', [App\Http\Controllers\DiagramController::class, 'sendData']);
+
+Route::put('/diagramas/{diagram}', [App\Http\Controllers\DiagramController::class, 'update']);
+
+Route::delete('/diagramas/{diagram}', [App\Http\Controllers\DiagramController::class, 'destroy']);

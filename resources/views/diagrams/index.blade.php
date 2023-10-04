@@ -12,6 +12,14 @@
                 </div>
             </div>
         </div>
+        <div class="card-body">
+            @if (session('notificacion'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('notificacion') }}
+                </div>
+            @endif
+        </div>
+
         <div class="table-responsive">
             <!-- Projects table -->
             <table class="table align-items-center table-flush">
@@ -26,25 +34,31 @@
                 </thead>
                 <tbody>
                     @foreach ($diagramas as $diagrama)
-                    <tr>
-                        <th scope="row">
-                            {{$diagrama->id}}
-                        </th>
-                        <td>
-                            {{$diagrama->titulo}}
-                        </td>
-                        <td>
-                            {{$diagrama->descripcion}}
-                        </td>
-                        <td>
-                            {{$diagrama->user->name}}
-                        </td>
-                        <td>
-                            <a href="url" class="btn btn-sm btn-primary">Editar</a>
-                            <a href="url" class="btn btn-sm btn-danger">Eliminar</a>
-                            <a href="url" class="btn btn-sm btn-info">Ir al Diagrama</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <th scope="row">
+                                {{ $diagrama->id }}
+                            </th>
+                            <td>
+                                {{ $diagrama->titulo }}
+                            </td>
+                            <td>
+                                {{ $diagrama->descripcion }}
+                            </td>
+                            <td>
+                                {{ $diagrama->user->name }}
+                            </td>
+                            <td>
+                                <form action="{{ url('/diagramas/' . $diagrama->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a href="{{ url('/diagramas/' . $diagrama->id . '/edit') }}"
+                                        class="btn btn-sm btn-primary">Editar</a>
+                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                    <a href="url" class="btn btn-sm btn-info">Ir al Diagrama</a>
+                                    <a href="url" class="btn btn-sm btn-warning">Invitar</a>
+                                </form>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
