@@ -33,6 +33,12 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ url('/diagramas') }}">Volver</a>
                     </li>
+                    <form method="post" action="{{ url('/diagramas/pizarra') }}">
+                        <input type="hidden" name="diagram_id" value="{{ $diagram->id }}">
+                        @csrf
+                        <input type="hidden" name="contenidoJson" id="mySavedModel" value="">
+                        <button type="submit" onclick="save()">GuardarDiagrama</button>
+                    </form>
                 </ul>
             </div>
         </div>
@@ -68,10 +74,10 @@
                         const nextKey = getNextLifelineKey(model);
                         const newLifelineData = {
                             key: nextKey,
-                            text: "OBJETO", 
+                            text: "OBJETO",
                             isGroup: true,
-                            loc: "400 0", 
-                            duration: 10, 
+                            loc: "400 0",
+                            duration: 10,
                         };
 
                         model.addNodeData(newLifelineData);
@@ -242,7 +248,7 @@
                         text: "Mensaje", // Puedes personalizar el texto del mensaje si lo deseas
                         time: 0 // Puedes establecer el tiempo según tus necesidades
                     };
-                
+
                     // Agregar el objeto de datos al modelo de datos de GoJS
                     myDiagram.model.addLinkData(linkData);
                     // Limpiar las entradas de texto después de generar el enlace
@@ -357,6 +363,7 @@
                     }
                 }
 
+
                 // A custom LinkingTool that fixes the "time" (i.e. the Y coordinate)
                 // for both the temporaryLink and the actual newly created Link
                 class MessagingTool extends go.LinkingTool {
@@ -450,6 +457,8 @@
                         }
                     }
                 }
+                var contenidoJson = {!! json_encode($contenidoJson) !!};
+                console.log(contenidoJson)
 
                 // Show the diagram's model in JSON format
                 function save() {
@@ -458,7 +467,7 @@
                 }
 
                 function load() {
-                    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+                    myDiagram.model = go.Model.fromJson(contenidoJson);
                 }
                 window.addEventListener('DOMContentLoaded', init);
             </script>
@@ -479,34 +488,15 @@
 
                         <button id="AddLifelineButton" onclick="addLifeline()">Añadir Linea de Vida</button>
 
-                        <button id="SaveButton" onclick="save()">Save</button>
                         <button onclick="load()">Load</button>
                         Diagram Model saved in JSON format:
                     </div>
                     <textarea id="mySavedModel" style="width:100%;height:240px">
-                        { "class": "GraphLinksModel",
-                        "nodeDataArray": [
-                      {"key":"Actor","text":"Actor","isGroup":true,"loc":"0 0","duration":9.75},
-                      {"key":"Interfaz","text":"IU Prestamo","isGroup":true,"loc":"156 0","duration":9.75},
-                      {"key":"Controlador","text":"C: Prestamo","isGroup":true,"loc":"286 0","duration":9.75},
-                      {"key":"Modelo","text":"M:Prestamo","isGroup":true,"loc":"413 0","duration":9.75},
-                      {"group":"Interfaz","start":1,"duration":2,"key":-5},
-                      {"group":"Controlador","start":1,"duration":3,"key":-6},
-                      {"group":"Actor","start":3.75,"duration":1,"key":-7},
-                      {"group":"Modelo","start":2,"duration":1,"key":-11},
-                      {"group":"Interfaz","start":4.25,"duration":1,"key":-12}
-                      ],
-                        "linkDataArray": [
-                      {"from":"Actor","to":"Interfaz","text":"Solicitar Datos()","time":1},
-                      {"from":"Interfaz","to":"Controlador","text":"Verificar Datos()","time":2},
-                      {"from":"Controlador","to":"Modelo","time":2,"text":"Crear Prestamo()"},
-                      {"from":"Modelo","to":"Interfaz","time":4.5,"text":"Prestamo Creado()"},
-                      {"from":"Interfaz","to":"Actor","time":4.25,"text":"Mensaje Satisfactorio()"}
-                      ]}
-          </textarea>
+                    </textarea>
                 </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>

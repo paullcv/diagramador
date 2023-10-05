@@ -41,3 +41,4 @@ Route::get('/colaboraciones', [App\Http\Controllers\InvitedController::class, 'i
 
 //Pizarra
 Route::get('/diagramas/{diagram}/pizarra', [App\Http\Controllers\PizarraController::class, 'index']);
+Route::post('/diagramas/pizarra', [App\Http\Controllers\PizarraController::class, 'savePizarra']);
