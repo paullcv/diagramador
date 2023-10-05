@@ -38,3 +38,6 @@ Route::post('/diagramas/invitaciones', [App\Http\Controllers\DiagramController::
 
 //Colaboraciones
 Route::get('/colaboraciones', [App\Http\Controllers\InvitedController::class, 'index']);
+
+//Pizarra
+Route::get('/diagramas/{diagram}/pizarra', [App\Http\Controllers\PizarraController::class, 'index']);
