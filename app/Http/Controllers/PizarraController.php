@@ -11,18 +11,19 @@ class PizarraController extends Controller
     public function index(Diagram $diagram)
     {
         $contenidoJson = $diagram->contenido;
-        return view('pizarra.index', compact('contenidoJson','diagram'));
+        return view('pizarra.index', compact('contenidoJson', 'diagram'));
     }
 
     public function savePizarra(Request $request)
     {
-
-        $diagramaID = $request->diagram_id;
         // Obtén el contenido JSON del diagrama desde la solicitud
         $contenidoJson = $request->input('contenidoJson');
 
+        // Obtén el ID del diagrama desde la solicitud
+        $diagramId = $request->input('diagram_id');
+
         // Encuentra o crea un registro en la tabla "diagram" (ajusta el nombre del modelo según corresponda)
-        $diagram = Diagram::firstOrNew(['id' => 1]); // Puedes cambiar el criterio de búsqueda según tu aplicación
+        $diagram = Diagram::firstOrNew(['id' => $diagramId]); // Puedes cambiar el criterio de búsqueda según tu aplicación
 
         // Actualiza el atributo "contenido" con el nuevo contenido JSON
         $diagram->contenido = $contenidoJson;

@@ -39,6 +39,8 @@
                         <input type="hidden" name="contenidoJson" id="mySavedModel" value="">
                         <button type="submit" onclick="save()">GuardarDiagrama</button>
                     </form>
+
+                    
                 </ul>
             </div>
         </div>
@@ -467,8 +469,15 @@
                 }
 
                 function load() {
-                    myDiagram.model = go.Model.fromJson(contenidoJson);
+                    const jsonContent = {!! json_encode($contenidoJson) !!};
+                    if (jsonContent) {
+                        myDiagram.model = go.Model.fromJson(jsonContent);
+                    } else {
+                        // Manejar el caso en el que el contenido JSON sea nulo o inválido
+                        console.error("El contenido JSON es nulo o inválido.");
+                    }
                 }
+
                 window.addEventListener('DOMContentLoaded', init);
             </script>
 
@@ -487,12 +496,7 @@
                         <input type="text" id="destinationLifeline" />
 
                         <button id="AddLifelineButton" onclick="addLifeline()">Añadir Linea de Vida</button>
-
-                        <button onclick="load()">Load</button>
-                        Diagram Model saved in JSON format:
                     </div>
-                    <textarea id="mySavedModel" style="width:100%;height:240px">
-                    </textarea>
                 </div>
             </div>
         </div>

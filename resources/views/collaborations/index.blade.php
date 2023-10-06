@@ -35,7 +35,7 @@
                                     {{ $invitacion->diagram->user->name }}
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-info">Ir al Diagrama</a>
+                                    <a href="#" class="btn btn-sm btn-success">Ir al Diagrama</a>
                                 </td>
                             </tr>
                         @endforeach
