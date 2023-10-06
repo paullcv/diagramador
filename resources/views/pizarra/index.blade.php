@@ -41,16 +41,14 @@
                     </form>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="generateCodeButton" data-toggle="modal"
+                        <a class="nav-link active" href="#" id="generateCodeButton" data-toggle="modal"
                             data-target="#codeModal">Generar Código</a>
                     </li>
 
                 </ul>
             </div>
         </div>
-        <!-- Modal para mostrar el código generado -->
-        <div class="modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -60,26 +58,25 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5>Java</h5>
-                                <pre id="generatedJavaCode"></pre>
-                            </div>
-                            <div class="col">
-                                <h5>Python</h5>
-                                <pre id="generatedPythonCode"></pre>
-                            </div>
-                            <div class="col">
-                                <h5>JavaScript</h5>
-                                <pre id="generatedJavaScriptCode"></pre>
-                            </div>
-                        </div>
+                        <h5>Java</h5>
+                        <img src="https://img.icons8.com/color/48/000000/java-coffee-cup-logo.png" alt="Java" class="language-icon-modal">
+                        <pre id="generatedJavaCode"></pre>
+        
+                        <h5>Python</h5>
+                        <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python" class="language-icon-modal">
+                        <pre id="generatedPythonCode"></pre>
+        
+                        <h5>JavaScript</h5>
+                        <img src="https://img.icons8.com/color/48/000000/javascript.png" alt="JavaScript" class="language-icon-modal">
+                        <pre id="generatedJavaScriptCode"></pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
-
-
+        
 
     </nav>
 
