@@ -40,10 +40,47 @@
                         <button type="submit" onclick="save()">GuardarDiagrama</button>
                     </form>
 
-                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="generateCodeButton" data-toggle="modal"
+                            data-target="#codeModal">Generar Código</a>
+                    </li>
+
                 </ul>
             </div>
         </div>
+        <!-- Modal para mostrar el código generado -->
+        <div class="modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="codeModalLabel">Código Generado</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Java</h5>
+                                <pre id="generatedJavaCode"></pre>
+                            </div>
+                            <div class="col">
+                                <h5>Python</h5>
+                                <pre id="generatedPythonCode"></pre>
+                            </div>
+                            <div class="col">
+                                <h5>JavaScript</h5>
+                                <pre id="generatedJavaScriptCode"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </nav>
 
     <div class="md:flex flex-col md:flex-row md:min-h-screen w-full max-w-screen-xl mx-auto">
@@ -502,5 +539,186 @@
         </div>
     </div>
 </body>
+
+<script>
+    // FUNCION PARA GENERAR CODIGO DE JAVA
+    function generateJavaCodeFromDiagram(diagramJson) {
+        // Analizar el JSON del diagrama
+        const diagramData = JSON.parse(diagramJson);
+
+        // Crear una cadena para el código Java
+        let javaCode = "public class Main {\n";
+
+        // Crear un mapa para asociar nombres de clases basados en el texto a las claves
+        const textToClassName = {};
+
+        // Crear instancias de clases basadas en la propiedad "text"
+        diagramData.nodeDataArray.forEach(node => {
+            const text = node.text;
+            if (text) {
+                const className = text.replace(/\s+/g, '');
+                textToClassName[node.key] = className;
+                javaCode += `    public ${className} ${text.toLowerCase()} = new ${className}();\n`;
+            }
+        });
+
+        // Generar llamadas a métodos dentro de la clase main
+        diagramData.linkDataArray.forEach(link => {
+            const fromNode = diagramData.nodeDataArray.find(node => node.key === link.from);
+            const toNode = diagramData.nodeDataArray.find(node => node.key === link.to);
+
+            if (fromNode && fromNode.text && toNode && toNode.text) {
+                const fromText = fromNode.text;
+                const toText = toNode.text;
+                const methodName = link.text.replace(/\s+/g, ''); // Eliminar espacios en el nombre del método
+                javaCode += `    ${fromText.toLowerCase()}.${methodName}();\n`;
+            }
+        });
+
+        // Cerrar la clase Main
+        javaCode += "}\n";
+
+        // Crear clases para representar elementos del diagrama y generar métodos vacíos
+        Object.keys(textToClassName).forEach(key => {
+            const className = textToClassName[key];
+            javaCode += `class ${className} {\n`;
+
+            diagramData.linkDataArray.forEach(link => {
+                const fromKey = link.from;
+                const toKey = link.to;
+
+                if (fromKey === key) {
+                    const methodName = link.text.replace(/\s+/g,
+                        ''); // Eliminar espacios en el nombre del método
+                    javaCode += `    public void ${methodName}() {\n`;
+                    javaCode += "        // Implementación de la operación " + methodName + "\n";
+                    javaCode += "    }\n";
+                }
+            });
+
+            javaCode += "}\n";
+        });
+
+        return javaCode;
+    }
+
+
+    // FUNCION PARA GENERAR CODIGO DE PYTHON
+    function generatePythonCodeFromDiagram(diagramJson) {
+        // Analizar el JSON del diagrama
+        const diagramData = JSON.parse(diagramJson);
+
+        // Crear una cadena para el código Python
+        let pythonCode = "";
+
+        // Crear clases para representar elementos del diagrama y generar métodos vacíos
+        const textToClassName = {};
+        diagramData.nodeDataArray.forEach(node => {
+            const text = node.text;
+            if (text) {
+                const className = text.replace(/\s+/g, '');
+                textToClassName[node.key] = className;
+                pythonCode += `class ${className}:\n`;
+
+                diagramData.linkDataArray.forEach(link => {
+                    const fromKey = link.from;
+                    const toKey = link.to;
+
+                    if (fromKey === node.key) {
+                        const methodName = link.text.replace(/\s+/g,
+                            ''); // Eliminar espacios en el nombre del método
+                        pythonCode += `    def ${methodName}(self):\n`;
+                        pythonCode += "        # Implementación de la operación " + methodName + "\n\n";
+                    }
+                });
+
+                pythonCode += "\n";
+            }
+        });
+
+        // Generar llamadas a métodos dentro del código principal
+        pythonCode += "if __name__ == '__main__':\n";
+        pythonCode += "    # Crear instancias de clases\n";
+        Object.keys(textToClassName).forEach(key => {
+            const className = textToClassName[key];
+            pythonCode += `    ${className.toLowerCase()} = ${className}()\n`;
+        });
+
+        pythonCode += "\n";
+        pythonCode += "    # Generar llamadas a métodos\n";
+        diagramData.linkDataArray.forEach(link => {
+            const fromNode = diagramData.nodeDataArray.find(node => node.key === link.from);
+            const toNode = diagramData.nodeDataArray.find(node => node.key === link.to);
+
+            if (fromNode && fromNode.text && toNode && toNode.text) {
+                const fromText = fromNode.text;
+                const toText = toNode.text;
+                const methodName = link.text.replace(/\s+/g, ''); // Eliminar espacios en el nombre del método
+                pythonCode += `    ${fromText.toLowerCase()}.${methodName}()\n`;
+            }
+        });
+
+        return pythonCode;
+    }
+
+    //FUNCION PARA GENERAR CODIGO DE JAVASCRIPT
+    function generateJavaScriptCodeFromDiagram(diagramJson) {
+        // Analizar el JSON del diagrama
+        const diagramData = JSON.parse(diagramJson);
+
+        // Crear una cadena para el código JavaScript
+        let jsCode = '';
+
+        // Crear clases para representar elementos del diagrama y generar métodos vacíos
+        const textToClassName = {};
+
+        diagramData.nodeDataArray.forEach(node => {
+            const text = node.text;
+            if (text) {
+                const className = text.replace(/\s+/g, '');
+                textToClassName[node.key] = className;
+                jsCode += `class ${className} {\n`;
+                jsCode += "    constructor() {\n";
+                jsCode += "        // Constructor\n";
+                jsCode += "    }\n";
+
+                diagramData.linkDataArray.forEach(link => {
+                    const fromKey = link.from;
+                    const toKey = link.to;
+
+                    if (fromKey === node.key) {
+                        const methodName = link.text.replace(/\s+/g, '');
+                        jsCode += `    ${methodName}() {\n`;
+                        jsCode += "        // Implementación de la operación " + methodName + "\n";
+                        jsCode += "    }\n";
+                    }
+                });
+
+                jsCode += "}\n";
+            }
+        });
+
+        return jsCode;
+    }
+
+    const codejava = generateJavaCodeFromDiagram(contenidoJson);
+    const codepython = generatePythonCodeFromDiagram(contenidoJson);
+    const codejavascript = generateJavaScriptCodeFromDiagram(contenidoJson);
+    console.log(codejava);
+    console.log(codepython);
+    console.log(codejavascript);
+
+    function displayGeneratedCode() {
+    const codejava = generateJavaCodeFromDiagram(contenidoJson);
+    const codepython = generatePythonCodeFromDiagram(contenidoJson);
+    const codejavascript = generateJavaScriptCodeFromDiagram(contenidoJson);
+
+    document.getElementById("generatedJavaCode").textContent = codejava;
+    document.getElementById("generatedPythonCode").textContent = codepython;
+    document.getElementById("generatedJavaScriptCode").textContent = codejavascript;
+}
+
+    document.getElementById("generateCodeButton").addEventListener("click", displayGeneratedCode);
+</script>
 
 </html>
