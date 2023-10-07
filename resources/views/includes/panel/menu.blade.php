@@ -1,4 +1,4 @@
-<h6 class="navbar-heading text-muted">Gestion</h6>
+{{-- <h6 class="navbar-heading text-muted">Gestion</h6> --}}
 <ul class="navbar-nav">
     <li class="nav-item  active ">
         <a class="nav-link  active " href="{{ url('/home') }}">

@@ -35,7 +35,7 @@
                                     {{ $invitacion->diagram->user->name }}
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-success">Ir al Diagrama</a>
+                                    <a href="{{ url('/diagramas/'. $invitacion->diagram->id . '/pizarra') }}" class="btn btn-sm btn-success">Ir al Diagrama</a>
                                 </td>
                             </tr>
                         @endforeach
