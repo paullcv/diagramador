@@ -13,6 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="{{ asset('css/gojs/style.css') }}" />
 </head>
 
@@ -28,17 +29,25 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ url('/')}}">Dashboard</a>
+                        <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ url('/diagramas') }}">Volver</a>
                     </li>
-                    <form method="post" action="{{ url('/diagramas/pizarra') }}">
+                    {{-- <form method="post" action="{{ url('/diagramas/pizarra') }}">
                         <input type="hidden" name="diagram_id" value="{{ $diagram->id }}">
                         @csrf
                         <input type="hidden" name="contenidoJson" id="mySavedModel" value="">
                         <button type="submit" onclick="save()">GuardarDiagrama</button>
+                    </form> --}}
+
+                    <form id="guardarDiagramaForm" method="post" action="{{ url('/diagramas/pizarra') }}">
+                        <input type="hidden" name="diagram_id" value="{{ $diagram->id }}">
+                        @csrf
+                        <input type="hidden" name="contenidoJson" id="mySavedModel" value="">
+                        <button type="button" id="guardarDiagramaButton">Guardar Diagrama</button>
                     </form>
+
 
                     <li class="nav-item">
                         <a class="nav-link active" href="#" id="generateCodeButton" data-toggle="modal"
@@ -48,7 +57,8 @@
                 </ul>
             </div>
         </div>
-        <div class="modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModalLabel" aria-hidden="true">
+        <div class="modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -59,15 +69,18 @@
                     </div>
                     <div class="modal-body">
                         <h5>Java</h5>
-                        <img src="https://img.icons8.com/color/48/000000/java-coffee-cup-logo.png" alt="Java" class="language-icon-modal">
+                        <img src="https://img.icons8.com/color/48/000000/java-coffee-cup-logo.png" alt="Java"
+                            class="language-icon-modal">
                         <pre id="generatedJavaCode"></pre>
-        
+
                         <h5>Python</h5>
-                        <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python" class="language-icon-modal">
+                        <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python"
+                            class="language-icon-modal">
                         <pre id="generatedPythonCode"></pre>
-        
+
                         <h5>JavaScript</h5>
-                        <img src="https://img.icons8.com/color/48/000000/javascript.png" alt="JavaScript" class="language-icon-modal">
+                        <img src="https://img.icons8.com/color/48/000000/javascript.png" alt="JavaScript"
+                            class="language-icon-modal">
                         <pre id="generatedJavaScriptCode"></pre>
                     </div>
                     <div class="modal-footer">
@@ -76,7 +89,7 @@
                 </div>
             </div>
         </div>
-        
+
 
     </nav>
 
@@ -706,16 +719,42 @@
     console.log(codejavascript);
 
     function displayGeneratedCode() {
-    const codejava = generateJavaCodeFromDiagram(contenidoJson);
-    const codepython = generatePythonCodeFromDiagram(contenidoJson);
-    const codejavascript = generateJavaScriptCodeFromDiagram(contenidoJson);
+        const codejava = generateJavaCodeFromDiagram(contenidoJson);
+        const codepython = generatePythonCodeFromDiagram(contenidoJson);
+        const codejavascript = generateJavaScriptCodeFromDiagram(contenidoJson);
 
-    document.getElementById("generatedJavaCode").textContent = codejava;
-    document.getElementById("generatedPythonCode").textContent = codepython;
-    document.getElementById("generatedJavaScriptCode").textContent = codejavascript;
-}
-
+        document.getElementById("generatedJavaCode").textContent = codejava;
+        document.getElementById("generatedPythonCode").textContent = codepython;
+        document.getElementById("generatedJavaScriptCode").textContent = codejavascript;
+    }
     document.getElementById("generateCodeButton").addEventListener("click", displayGeneratedCode);
 </script>
 
+<script>
+  $(document).ready(function() {
+    $('#guardarDiagramaButton').click(function() {
+        // Obtén el contenido JSON del diagrama
+        var contenidoJson = myDiagram.model.toJson();
+
+        // Realiza la solicitud AJAX para guardar el diagrama
+        $.ajax({
+            type: 'POST',
+            url: $('#guardarDiagramaForm').attr('action'),
+            data: {
+                _token: $('input[name="_token"]').val(),
+                diagram_id: $('input[name="diagram_id"]').val(),
+                contenidoJson: contenidoJson
+            },
+            success: function(response) {
+                // Maneja la respuesta del servidor, si es necesario
+                console.log('Diagrama guardado con éxito.');
+            },
+            error: function(error) {
+                // Maneja errores, si es necesario
+                console.error('Error al guardar el diagrama:', error);
+            }
+        });
+    });
+});
+</script>
 </html>
