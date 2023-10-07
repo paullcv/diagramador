@@ -2,13 +2,13 @@
     <div class=" dropdown-header noti-title">
         <h6 class="text-overflow m-0">Bienvenido</h6>
     </div>
-    <a href="#" class="dropdown-item">
+    <a href="{{ url('/diagramas')}}" class="dropdown-item">
         <i class="ni ni-single-02"></i>
-        <span>Mi Perfil</span>
+        <span>Mis Diagramas</span>
     </a>
-    <a href="#" class="dropdown-item">
+    <a href="{{ url('/colaboraciones')}}" class="dropdown-item">
         <i class="ni ni-settings-gear-65"></i>
-        <span>Configuración</span>
+        <span>Colaboraciones</span>
     </a>
     {{-- <a href="#" class="dropdown-item">
         <i class="ni ni-calendar-grid-58"></i>
