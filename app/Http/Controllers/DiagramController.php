@@ -10,10 +10,12 @@ use Illuminate\Http\Request;
 class DiagramController extends Controller
 {
 
+    /*
     public function __construct()
     {
         $this->middleware('auth');
     }
+    */
 
     // mostrar los diagramas
     public function index()

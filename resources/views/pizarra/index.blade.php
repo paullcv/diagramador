@@ -45,7 +45,7 @@
                         <input type="hidden" name="diagram_id" value="{{ $diagram->id }}">
                         @csrf
                         <input type="hidden" name="contenidoJson" id="mySavedModel" value="">
-                        <button type="button" id="guardarDiagramaButton">Guardar Diagrama</button>
+                        <button class="btn btn-sm btn-success" type="button" id="guardarDiagramaButton">Guardar Diagrama</button>
                     </form>
 
 
@@ -719,6 +719,9 @@
     console.log(codejavascript);
 
     function displayGeneratedCode() {
+
+        var contenidoJson = myDiagram.model.toJson();
+
         const codejava = generateJavaCodeFromDiagram(contenidoJson);
         const codepython = generatePythonCodeFromDiagram(contenidoJson);
         const codejavascript = generateJavaScriptCodeFromDiagram(contenidoJson);

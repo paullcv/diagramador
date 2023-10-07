@@ -13,14 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+Route::group(['middleware' => 'auth'], function () {
 //Diagrama
 Route::get('/diagramas', [App\Http\Controllers\DiagramController::class, 'index']);
 
@@ -42,3 +46,5 @@ Route::get('/colaboraciones', [App\Http\Controllers\InvitedController::class, 'i
 //Pizarra
 Route::get('/diagramas/{diagram}/pizarra', [App\Http\Controllers\PizarraController::class, 'index']);
 Route::post('/diagramas/pizarra', [App\Http\Controllers\PizarraController::class, 'savePizarra']);
+
+});
