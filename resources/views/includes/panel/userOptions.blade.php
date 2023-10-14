@@ -10,14 +10,6 @@
         <i class="ni ni-settings-gear-65"></i>
         <span>Colaboraciones</span>
     </a>
-    {{-- <a href="#" class="dropdown-item">
-        <i class="ni ni-calendar-grid-58"></i>
-        <span>Mis citas</span>
-    </a> --}}
-    {{-- <a href="#" class="dropdown-item">
-        <i class="ni ni-support-16"></i>
-        <span>Ayuda</span>
-    </a> --}}
     <div class="dropdown-divider"></div>
     <a href="{{ route('logout') }}" class="dropdown-item"  onclick="event.preventDefault(); document.getElementById('formLogout').submit();">
         <i class="fas fa-sign-in-alt"></i>

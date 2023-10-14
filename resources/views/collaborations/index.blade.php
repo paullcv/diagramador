@@ -36,6 +36,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ url('/diagramas/'. $invitacion->diagram->id . '/pizarra') }}" class="btn btn-sm btn-success">Ir al Diagrama</a>
+                                    <a href="{{ url('/diagramas/' . $invitacion->diagram->id . '/descargar') }}" class="btn btn-sm btn-dark">Copia Local</a>
                                 </td>
                             </tr>
                         @endforeach

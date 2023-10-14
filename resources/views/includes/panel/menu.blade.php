@@ -15,15 +15,6 @@
             <i class="fas fa-bezier-curve text-success"></i> Colaboraciones
         </a>
     </li>
-    {{-- <li class="nav-item">
-        <a class="nav-link " href="./examples/profile.html">
-            <i class="fas fa-procedures text-warning"></i> Pacientes
-        </a>
-    </li> --}}
-  
-    <!-- Divider -->
-    {{-- <hr class="my-3"> --}}
-
     <li class="nav-item">
         <a class="nav-link" href="{{ route('logout') }}"
             onclick="event.preventDefault(); document.getElementById('formLogout').submit();">
@@ -34,19 +25,3 @@
         </form>
     </li>
 </ul>
-<!-- Divider -->
-{{-- <hr class="my-3"> --}}
-<!-- Heading -->
-{{-- <h6 class="navbar-heading text-muted">Reportes</h6> --}}
-<!-- Navigation -->
-{{-- <ul class="navbar-nav mb-md-3">
-    <li class="nav-item">
-        <a class="nav-link" href="">
-            <i class="far fa-calendar-alt text-info"></i> Citas
-        </a>
-    </li> --}}
-    {{-- <li class="nav-item">
-        <a class="nav-link" href="">
-            <i class="far fa-chart-bar text-blue"></i> Desempeño Médico
-        </a>
-    </li> --}}

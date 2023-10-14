@@ -6,17 +6,11 @@ use App\Models\Diagram;
 use App\Models\Invited;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class DiagramController extends Controller
 {
-
-    /*
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    */
-
     // mostrar los diagramas
     public function index()
     {
@@ -140,5 +134,32 @@ class DiagramController extends Controller
         $invitacion->save();
 
         return redirect('/diagramas');
+    }
+
+    public function descargar(Diagram $diagram)
+    {
+        // Obtén el contenido del diagrama en formato JSON
+        $contenido = $diagram->contenido;
+
+        // Obtén el nombre del archivo
+        $nombreArchivo = $diagram->titulo. '.json';
+
+        // Genera un nombre de archivo único
+        $fileName = $nombreArchivo;
+
+        // Ruta donde se almacenará el archivo JSON localmente
+        $filePath = storage_path('app/public/' . $fileName);
+
+        // Almacena el archivo JSON localmente
+        File::put($filePath, $contenido);
+
+        // Configura las cabeceras de respuesta para indicar que es un archivo JSON
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ];
+
+        // Envía la respuesta al navegador para descargar el archivo
+        return response()->download($filePath, $fileName, $headers)->deleteFileAfterSend(true);
     }
 }

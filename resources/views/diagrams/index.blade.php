@@ -62,6 +62,7 @@
                                     <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                                     <a href="{{ url('/diagramas/'. $diagrama->id . '/pizarra') }}" class="btn btn-sm btn-info">Ir al Diagrama</a>
                                     <a href="{{ url('/diagramas/' . $diagrama->id .'/invitaciones') }}" class="btn btn-sm btn-warning">Invitar</a>
+                                    <a href="{{ url('/diagramas/' . $diagrama->id . '/descargar') }}" class="btn btn-sm btn-dark">Copia Local</a>
                                 </form>
                             </td>
                         </tr>

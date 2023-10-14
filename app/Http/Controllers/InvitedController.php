@@ -7,13 +7,6 @@ use Illuminate\Http\Request;
 
 class InvitedController extends Controller
 {
-    //
-    /*
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    */
 
     // vista de las colaboraciones
     public function index(){

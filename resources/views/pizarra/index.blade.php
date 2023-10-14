@@ -34,13 +34,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ url('/diagramas') }}">Volver</a>
                     </li>
-                    {{-- <form method="post" action="{{ url('/diagramas/pizarra') }}">
-                        <input type="hidden" name="diagram_id" value="{{ $diagram->id }}">
-                        @csrf
-                        <input type="hidden" name="contenidoJson" id="mySavedModel" value="">
-                        <button type="submit" onclick="save()">GuardarDiagrama</button>
-                    </form> --}}
-
                     <form id="guardarDiagramaForm" method="post" action="{{ url('/diagramas/pizarra') }}">
                         <input type="hidden" name="diagram_id" value="{{ $diagram->id }}">
                         @csrf
