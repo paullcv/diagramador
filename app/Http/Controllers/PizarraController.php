@@ -33,6 +33,5 @@ class PizarraController extends Controller
 
         // Redirige al usuario a la página deseada después de guardar el diagrama
         return response()->noContent();
-
     }
 }

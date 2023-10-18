@@ -162,4 +162,5 @@ class DiagramController extends Controller
         // Envía la respuesta al navegador para descargar el archivo
         return response()->download($filePath, $fileName, $headers)->deleteFileAfterSend(true);
     }
+    
 }

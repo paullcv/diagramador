@@ -38,7 +38,8 @@
                         <input type="hidden" name="diagram_id" value="{{ $diagram->id }}">
                         @csrf
                         <input type="hidden" name="contenidoJson" id="mySavedModel" value="">
-                        <button class="btn btn-sm btn-success" type="button" id="guardarDiagramaButton">Guardar Diagrama</button>
+                        <button class="btn btn-sm btn-success" type="button" id="guardarDiagramaButton">Guardar
+                            Diagrama</button>
                     </form>
 
 
@@ -109,30 +110,6 @@
                             "undoManager.isEnabled": true
                         });
 
-
-                    //LINEA DE VIDA BOTON
-                    function addLifeline() {
-                        const model = myDiagram.model;
-                        const nextKey = getNextLifelineKey(model);
-                        const newLifelineData = {
-                            key: nextKey,
-                            text: "OBJETO",
-                            isGroup: true,
-                            loc: "400 0",
-                            duration: 10,
-                        };
-
-                        model.addNodeData(newLifelineData);
-                    }
-
-                    function getNextLifelineKey(model) {
-                        let nextKey = 1;
-                        while (model.findNodeDataForKey(nextKey)) {
-                            nextKey++;
-                        }
-                        return nextKey.toString();
-                    }
-
                     // cuando se modifique el documento, añada un "*" al título y active el botón "Guardar".
                     myDiagram.addDiagramListener("Modified", e => {
                         const button = document.getElementById("SaveButton");
@@ -140,6 +117,7 @@
                         const idx = document.title.indexOf("*");
                         if (myDiagram.isModified) {
                             if (idx < 0) document.title += "*";
+                            saveDiagramAutomatically();
                         } else {
                             if (idx >= 0) document.title = document.title.slice(0, idx);
                         }
@@ -248,10 +226,31 @@
                         );
                     // create the graph by reading the JSON data saved in "mySavedModel" textarea element
                     load();
-                    const addLifelineButton = document.getElementById("AddLifelineButton");
-                    addLifelineButton.addEventListener("click", addLifeline);
                 }
                 // FIN INIT
+                //LINEA DE VIDA BOTON
+                function addLifeline() {
+                    const model = myDiagram.model;
+                    const nextKey = getNextLifelineKey(model);
+                    const newLifelineData = {
+                        key: nextKey,
+                        text: "OBJETO",
+                        isGroup: true,
+                        loc: "400 0",
+                        duration: 10,
+                    };
+
+                    model.addNodeData(newLifelineData);
+                    saveDiagramAutomatically();
+                }
+
+                function getNextLifelineKey(model) {
+                    let nextKey = 1;
+                    while (model.findNodeDataForKey(nextKey)) {
+                        nextKey++;
+                    }
+                    return nextKey.toString();
+                }
 
                 function ensureLifelineHeights(e) {
                     // iterate over all Activities (ignore Groups)
@@ -272,30 +271,6 @@
                             }
                         }
                     }
-                }
-
-                // Función para generar un enlace con la forma de flecha especificada
-                function generateLink() {
-                    const originLifeline = document.getElementById("originLifeline").value;
-                    const destinationLifeline = document.getElementById("destinationLifeline").value;
-                    // Verificar que se haya especificado un texto para la Lifeline de origen y destino
-                    if (originLifeline === "" || destinationLifeline === "") {
-                        alert("Por favor, complete ambos campos de Lifeline.");
-                        return;
-                    }
-                    // Crear un objeto de datos para el enlace
-                    const linkData = {
-                        from: originLifeline,
-                        to: destinationLifeline,
-                        text: "Mensaje", // Puedes personalizar el texto del mensaje si lo deseas
-                        time: 0 // Puedes establecer el tiempo según tus necesidades
-                    };
-
-                    // Agregar el objeto de datos al modelo de datos de GoJS
-                    myDiagram.model.addLinkData(linkData);
-                    // Limpiar las entradas de texto después de generar el enlace
-                    document.getElementById("originLifeline").value = "";
-                    document.getElementById("destinationLifeline").value = "";
                 }
 
                 // some parameters
@@ -450,27 +425,23 @@
                             model.addNodeData(newact);
                             // now make sure all Lifelines are long enough
                             ensureLifelineHeights();
+                            saveDiagramAutomatically();
                         }
                         return newlink;
                     }
                 }
 
-                // A custom DraggingTool that supports dragging any number of MessageLinks up and down --
-                // changing their data.time value.
+
                 class MessageDraggingTool extends go.DraggingTool {
-                    // override the standard behavior to include all selected Links,
-                    // even if not connected with any selected Nodes
                     computeEffectiveCollection(parts, options) {
                         const result = super.computeEffectiveCollection(parts, options);
-                        // add a dummy Node so that the user can select only Links and move them all
                         result.add(new go.Node(), new go.DraggingInfo(new go.Point()));
-                        // normally this method removes any links not connected to selected nodes;
-                        // we have to add them back so that they are included in the "parts" argument to moveParts
                         parts.each(part => {
                             if (part instanceof go.Link) {
                                 result.add(part, new go.DraggingInfo(part.getPoint(0).copy()));
                             }
                         })
+                        saveDiagramAutomatically();
                         return result;
                     }
 
@@ -479,9 +450,6 @@
                         return !this.diagram.isReadOnly && this.diagram.allowMove;
                     }
 
-                    // override to move Links (which are all assumed to be MessageLinks) by
-                    // updating their Link.data.time property so that their link routes will
-                    // have the correct vertical position
                     moveParts(parts, offset, check) {
                         super.moveParts(parts, offset, check);
                         const it = parts.iterator;
@@ -525,16 +493,6 @@
                 <div id="myDiagramDiv" style="border: solid 1px black; width: 100%; height: 800px"></div>
                 <div>
                     <div>
-                        <!-- Botones para generar enlaces -->
-                        <button onclick="generateLink()">Enlace</button>
-
-                        <!-- Entradas de texto para Lifeline de origen y destino -->
-                        <label for="originLifeline">Lifeline de Origen:</label>
-                        <input type="text" id="originLifeline" />
-
-                        <label for="destinationLifeline">Lifeline de Destino:</label>
-                        <input type="text" id="destinationLifeline" />
-
                         <button id="AddLifelineButton" onclick="addLifeline()">Añadir Linea de Vida</button>
                     </div>
                 </div>
@@ -707,9 +665,9 @@
     const codejava = generateJavaCodeFromDiagram(contenidoJson);
     const codepython = generatePythonCodeFromDiagram(contenidoJson);
     const codejavascript = generateJavaScriptCodeFromDiagram(contenidoJson);
-    console.log(codejava);
-    console.log(codepython);
-    console.log(codejavascript);
+    // console.log(codejava);
+    // console.log(codepython);
+    // console.log(codejavascript);
 
     function displayGeneratedCode() {
 
@@ -727,11 +685,9 @@
 </script>
 
 <script>
-  $(document).ready(function() {
-    $('#guardarDiagramaButton').click(function() {
+    function saveDiagramAutomatically() {
         // Obtén el contenido JSON del diagrama
         var contenidoJson = myDiagram.model.toJson();
-
         // Realiza la solicitud AJAX para guardar el diagrama
         $.ajax({
             type: 'POST',
@@ -750,7 +706,19 @@
                 console.error('Error al guardar el diagrama:', error);
             }
         });
+    }
+
+    // Llama a la función de guardado automáticamente cada segundo
+    ///setInterval(saveDiagramAutomatically, 2000);
+
+    // Agrega el manejador al botón "Guardar Diagrama"
+    $(document).ready(function() {
+        $('#guardarDiagramaButton').click(function() {
+            saveDiagramAutomatically(); // Llama al guardado manual
+        });
     });
-});
+
+
 </script>
+
 </html>
